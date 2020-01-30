@@ -1,0 +1,51 @@
+{
+  "//1": "describes your app and its dependencies",
+  "//2": "https://docs.npmjs.com/files/package.json",
+  "//3": "updating this file will download and update your packages",
+  "name": "hello-sqlite",
+  "version": "0.0.1",
+  "description": "A simple Node app with SQLite as a database management system, instantly up and running.",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "dependencies": {
+    "discord-giveaways": "^3.0.11",
+    "carina": "^0.12.0",
+    "discord.js": "^11.5.1",
+    "express": "^4.17.1",
+    "ms": "^2.1.2",
+    "quick.db": "^7.0.0b22",
+    "sqlite3": "^4.1.1",
+    "ws": "^7.2.1",
+    "animate.css": "^3.7.1",
+    "express-session": "^1.16.1",
+    "mongoose": "^5.8.10",
+    "passport": "^0.4.1",
+    "passport-discord": "^0.1.3",
+    "passport-oauth2-refresh": "^1.1.0",
+    "cookie-parser": "^1.4.4",
+    "body-parser": "^1.19.0",
+    "connect-ensure-login": "^0.1.1",
+    "shortid": "^2.2.15",
+    "html2plaintext": "^2.1.2",
+    "ejs": "^3.0.1",
+    "html": "^1.0.0",
+    "canvas": "^2.6.1",
+    "node-cmd": "^3.0.0",
+    "node-fetch": "^2.6.0",
+    "handybag": "^0.1.0a"
+  },
+  "engines": {
+    "node": "8.x"
+  },
+  "repository": {
+    "url": "https://glitch.com/edit/#!/hello-sqlite"
+  },
+  "license": "MIT",
+  "keywords": [
+    "node",
+    "glitch",
+    "express"
+  ]
+}

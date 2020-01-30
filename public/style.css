@@ -1,0 +1,26 @@
+body {
+  padding-top: 160px;
+  text-align: center;
+  padding-bottom: 50px;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.fredoka{
+  font-family: 'Fredoka One', cursive;
+}
+
+.padbtm{
+  padding-bottom: 500px
+}
+
+.splash{
+  background-image: url("https://cdn.glitch.com/1dd475cd-8575-4ddb-a6c4-9c40b3d41ecc%2Fsplash.jpg?v=1579114616337");
+  color: white;
+  background-repeat: no-repeat;
+  background-position: center top;
+}
+
+.padright{
+  padding-right: 20px
+}

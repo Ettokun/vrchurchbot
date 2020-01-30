@@ -1,0 +1,35 @@
+<html>
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <title>VR Church - Discord Dashboard</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://fonts.googleapis.com/css?family=Fredoka+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="splash">
+  <div class="padbtm">
+    <h1 class="fredoka">
+      Welcome to the VR Church Discord Management Dashboard<% if(user){ %>, <%-username%><% } %>!
+    </h1>
+  </div>
+  <% if (user) { %>
+     <div class="container">
+       <% if (quest) { %>
+      <a href="/quest" class="btn btn-primary" role="button" aria-disabled="false">Create Quest</a>
+       <% } %>
+      <% if (mod) { %>
+      <a href="/mod" class="btn btn-danger" role="button" aria-disabled="false">Discord Moderator Panel</a>
+       <% } %>
+      <a href="/giveaway" class="btn btn-warning" role="button" aria-disabled="false">Request Giveaway</a>
+      <a href="/logout" class="btn btn-secondary" role="button" aria-disabled="false">Logout</a>
+  </div>
+  <% } else { %>
+  <div class="container">
+    <a href="/auth/discord" class="btn btn-primary" role="button" "aria-disabled"="false">Login</a>
+    <a href="/server" class="btn btn-primary" role="button" "aria-disabled"="false">Join Server</a>
+  </div>
+  <% } %>
+  
+</body>
+</html>
