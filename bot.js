@@ -174,16 +174,18 @@ app.get(
     failureRedirect: "/"
   }),
   function(req, res) {
-    // const addVRC = fetch(`http://discordapp.com/api/guilds/%{config.server}/members/${req.user.id}`,
-    //   {
-    //             method: 'PUT',
-    //             headers: {
-    //               Authorization: `Bot ${process.env.TOKEN}`,
-    //             },
-    //           });
-    //           setTimeout(() => {
-    //               console.log(addVRC)
-    //           }, 500);
+    const addVRC = fetch(
+      `http://discordapp.com/api/guilds/${config.server}/members/${req.user.id}`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bot ${process.env.TOKEN}`
+        }
+      }
+    );
+    setTimeout(() => {
+      console.log(addVRC);
+    }, 500);
     res.redirect(`/`); // Successful auth
   }
 );
@@ -700,12 +702,12 @@ client.on("message", async message => {
       eventname.toLowerCase().includes("altspace")
     )
       locationping = "<@&650722476313018378>";
-    if (eventname.toLowerCase().includes("vrchat"))
-      locationping = "<@&650716237671825448>";
     if (
       eventname.toLowerCase().includes("rec room") ||
       eventname.toLowerCase().includes("recroom")
     )
+      locationping = "<@&650722114634252308>";
+    if (eventname.toLowerCase().includes("vrchat"))
       locationping = "<@&650716237671825448>";
     client.guilds
       .get(config.server)
