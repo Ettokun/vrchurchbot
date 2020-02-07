@@ -1,3 +1,9 @@
+const Telegraf = require('telegraf')
+const tbot = require('./telegram.js')
+const Telegram = require('telegraf/telegram')
+const telegram = new Telegram(process.env.TELEGRAM)
+
+
 const express = require("express");
 const app = express();
 const Strategy = require("passport-discord").Strategy;
@@ -74,6 +80,12 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+app.set('trust proxy', true); // <- required
+app.use((req, res, next) => {
+  if(!req.secure) return res.redirect('https://' + req.get('host') + req.url);
+  next();
+});
+
 
 app.get("*", function(req, res) {
   console.log("===================================================");
@@ -243,6 +255,7 @@ app.post("/requestsubmit", async (req, res) => {
   const questtitle = req.body.questtitle;
   const questpoints = Math.abs(req.body.questpoints);
   const description = req.body.description;
+  const type = req.body.questtype
   let questtake = req.body.questtake;
   if (questtake === "Yes") questtake = true;
   if (questtake === "No") questtake = false;
@@ -252,7 +265,7 @@ app.post("/requestsubmit", async (req, res) => {
   const questembed = new Discord.RichEmbed()
     .setTitle("**New Quest!**")
     .setDescription(
-      `A new quest titled \`${questtitle}\` has been created by ${author}!\n\n**__Description__**:\n${description}\n\nThis quest is worth ${questpoints} XP\n\nRedeem this quest using this command:\n\`!reward ${questid}\``
+      `A new quest titled \`${questtitle}\` has been created by ${author}!\n\n**__Description__**:\n${description}\n\nThis quest is worth ${questpoints} XP\n\nThis quest is a ${type} quest, and you can redeem this quest using this command:\n\`!reward ${questid}\``
     )
     .setAuthor(author.username, author.avatarURL)
     .addBlankField()
@@ -264,6 +277,8 @@ app.post("/requestsubmit", async (req, res) => {
     creator: username,
     id: questid,
     free: questtake,
+    type: type,
+    created: Date.now(),
     rewarded: []
   });
   author.send("Quest setup success! ID: " + questid);
@@ -282,6 +297,10 @@ client.on("ready", () => {
   updatestats();
   setInterval(updatestats, 300000);
 });
+
+client.on("guildMemberJoin", asyncmember => {
+  if(member.guild.id === config.server) message
+})
 
 client.on("message", async message => {
   if (message.guild.id === config.server) client.emit("editscore", message);
@@ -305,6 +324,8 @@ client.on("message", async message => {
   trigger.forEach(trigger => {
     if (message.content.includes(trigger)) suicideTrigger(message, client);
   });
+  
+  if(message.channel.id === config.linkids.discord) return telegram.sendMessage(config.linkids.telegramtest, message.author.username + ": " + message.content)
 
   if (message.content.indexOf(config.prefix) !== 0) return;
   const args = message.content
@@ -711,9 +732,9 @@ client.on("message", async message => {
       locationping = "<@&650716237671825448>";
     client.guilds
       .get(config.server)
-      .channels.get(config.announcements)
+      .channels.get(config.alerts)
       .send(
-        `Hey everybody! Our next event on our calendar begins soon!\n\n${eventname}\n\n||@here <@&650907704008900609> ${locationping}||`
+        `Hey everybody! Our next event on our calendar begins soon!\n\n${eventname}\n\n||<@&650907704008900609> ${locationping}||`
       );
     message.react("✅");
   }
@@ -787,6 +808,39 @@ client.on("message", async message => {
       client.emit("editscore", message);
       message.react("✅");
     }
+  }
+  
+  if (command === "newteam") {
+    if (!message.guild.id === config.volunteerserver) return message.channel.send("This command only works in the volunteer server")
+    const newargs = message.content
+      .slice(config.prefix.length)
+      .trim()
+      .split(/ +/g);
+    const command = args.shift().toLowerCase();
+    let bottomposition = message.guild.roles.find(
+      role => role.name === "===Dont Delete==="
+    ).position;
+    let newrole = await message.guild.createRole({
+      name: newargs.slice(1).join(" "),
+      hoist: true,
+      position: bottomposition + 1,
+      mentionable: true,
+      permissions: 0
+    });
+    message.guild.createChannel(newargs.slice(1).join("-"), {
+      type: "text", parent: "668902228907524174",
+      permissionOverwrites: [
+        {
+          id: message.guild.id,
+          deny: ["VIEW_CHANNEL"]
+        },
+        {
+          id: newrole.id,
+          allow: ["VIEW_CHANNEL"]
+        }
+      ]
+    });
+    message.react("👍");
   }
 
   if (command === "eval") {
@@ -1154,3 +1208,4 @@ function updatestats() {
 }
 
 client.login(process.env.TOKEN);
+exports.client = client
