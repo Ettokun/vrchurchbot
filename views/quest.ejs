@@ -28,6 +28,15 @@ for(var i = 0; i < hashParams.length; i++){
     <label for="questpoints">How many points is this quest worth?</label>
     <input type="text" class="form-control" id="questpoints" name="questpoints" placeholder="50" required>
   </div>
+    <div class="form-group">
+    <label for="questtype">What type of quest is this?</label>
+    <select class="form-control" id="questtype" name="questtype" required>
+      <option value="onetime">One-Time</option>
+      <option value="monthly">Monthly</option>
+      <option value="weekly">Weekly</option>
+      <option value="daily">Daily</option>
+    </select>
+  </div>
   <div class="form-group">
     <label>Do you want this quest to be free to take?  </label>
     <input type="radio" name="questtake" value="Yes">  Yes  
