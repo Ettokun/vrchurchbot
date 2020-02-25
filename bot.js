@@ -27,6 +27,8 @@ const quests = new db.table("quests");
 const authdb = new db.table("authdb");
 const mutes = new db.table("mutes");
 const scoreboards = new db.table("scoreboards");
+const dbtest = new db.table("dbtest");
+const bans = new db.table("bans");
 const q = quests;
 
 const session = require("express-session");
@@ -298,8 +300,8 @@ client.on("ready", () => {
   setInterval(updatestats, 300000);
 });
 
-client.on("guildMemberJoin", asyncmember => {
-  if(member.guild.id === config.server) message
+client.on("guildMemberAdd", async member => {
+  if(member.guild.id === config.server) member.send("Hi there! Oh behalf of all of us, welcome to the VR Church Discord server! We’re so glad you decided to join us. I know that welcome messages with a bot may seem a little impersonal, but we wanted to make sure that no one was left behind, since we've been growing so quickly.\n\nOn another note, We have a few channels for you to check out:\n<#650683190142566420> is a list of all the rules of this server, which must be followed.\nIn <#650904802276016139>, you can get roles for the VR platforms you use at the top of the channel, as well as some other announcement pings\n<#650690867992068132> is a guide to the times and locations of all our lifegroups and services, as well as some helpful links\n\nThanks for coming and hanging out with us! Feel free to dm me, <@439223656200273932> (TheShadow#8124) with any questions about the server or ask around here 🙂")
 })
 
 client.on("message", async message => {
@@ -560,6 +562,15 @@ client.on("message", async message => {
     });
     message.react("✅")
   }
+  
+  if(command === "args"){
+    message.channel.send(`["${args.join(`", "`)}"]`, {code:"xl"})
+  }
+  
+  if(command === "getgwawinners"){
+    if(!args[0]) return message.channel.send("Please specify a message **in this current channel**")
+    let gwa = message.channel.fetchMessage(args[0])
+  }
 
   if (command === "stoptype") {
     message.delete().catch(O_o => {});
@@ -612,6 +623,14 @@ client.on("message", async message => {
     let amount = parseInt(args[1], 10);
     db.set(userid, amount);
     message.channel.send("XP set to " + amount + " for User " + userid);
+  }
+  
+  if(command === "wipexp"){
+    let alldb = dbtest.all()
+    alldb.forEach(entry => {
+      console.log(entry)
+      alldb.delete(entry.ID)
+    })
   }
 
   if (command === "xp") {
@@ -730,6 +749,8 @@ client.on("message", async message => {
       locationping = "<@&650722114634252308>";
     if (eventname.toLowerCase().includes("vrchat"))
       locationping = "<@&650716237671825448>";
+    if (eventname.toLowerCase().includes("minecraft"))
+      locationping = "<@&678331328760119296>";
     client.guilds
       .get(config.server)
       .channels.get(config.alerts)
