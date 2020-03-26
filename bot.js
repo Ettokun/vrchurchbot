@@ -440,6 +440,7 @@ client.on("message", async message => {
   if (command === "say") {
     message.delete().catch(O_o => {});
     message.channel.startTyping();
+    if(!message.author.id === config.ownerID) return
     // makes the bot say something and delete the message. As an example, it's open to anyone to use.
     // To get the "message" itself we join the `args` back into a string with spaces:
     const sayMessage = args.join(" ");
@@ -751,6 +752,12 @@ client.on("message", async message => {
       locationping = "<@&650716237671825448>";
     if (eventname.toLowerCase().includes("minecraft"))
       locationping = "<@&678331328760119296>";
+    if (eventname.toLowerCase().includes("magnum opus"))
+      locationping = "<@&687159385604096000>";
+    if (eventname.toLowerCase().includes("overwatch"))
+      locationping = "<@&686336003878944888>";
+    if (eventname.toLowerCase().includes("sea of thieves"))
+      locationping = "<@&691554614780100619>";
     client.guilds
       .get(config.server)
       .channels.get(config.alerts)
